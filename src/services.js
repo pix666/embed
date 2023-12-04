@@ -179,4 +179,12 @@ export default {
     width: 600,
     id: (groups) => `${groups.join('/')}.js`,
   },
+  threshold360: {
+    regex: /https?:\/\/cloud.threshold360.com\/embed\/locations\/([^\/\?\&]+)(?:\?web-key=)([^\?\&]+)/,
+    embedUrl: 'https://cloud.threshold360.com/embed/locations/<%= remote_id %>',
+    html: '<iframe width="580" height="320" frameborder="0" style="margin: 0 auto;"></iframe>',
+    height: 320,
+    width: 580,
+    id: (groups) => `${groups.join('?web-key=')}`,
+  },
 };
