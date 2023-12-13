@@ -13,9 +13,9 @@ const g = {
     html: '<iframe style="width:100%;" height="320" frameborder="0" allowfullscreen></iframe>',
     height: 320,
     width: 580,
-    id: ([o, t]) => {
-      if (!t && o)
-        return o;
+    id: ([s, t]) => {
+      if (!t && s)
+        return s;
       const i = {
         start: "start",
         end: "end",
@@ -25,9 +25,9 @@ const g = {
         list: "list"
       };
       return t = t.slice(1).split("&").map((e) => {
-        const [s, n] = e.split("=");
-        return !o && s === "v" ? (o = n, null) : !i[s] || n === "LL" || n.startsWith("RDMM") || n.startsWith("FL") ? null : `${i[s]}=${n}`;
-      }).filter((e) => !!e), o + "?" + t.join("&");
+        const [o, n] = e.split("=");
+        return !s && o === "v" ? (s = n, null) : !i[o] || n === "LL" || n.startsWith("RDMM") || n.startsWith("FL") ? null : `${i[o]}=${n}`;
+      }).filter((e) => !!e), s + "?" + t.join("&");
     }
   },
   coub: {
@@ -85,7 +85,7 @@ const g = {
     html: '<iframe frameborder="0" style="border:none;width:540px;height:100px;" style="width:100%;" height="100"></iframe>',
     height: 100,
     width: 540,
-    id: (o) => o.join("/")
+    id: (s) => s.join("/")
   },
   "yandex-music-playlist": {
     regex: /https?:\/\/music\.yandex\.ru\/users\/([^\/\?\&]*)\/playlists\/([0-9]*)/,
@@ -93,7 +93,7 @@ const g = {
     html: '<iframe frameborder="0" style="border:none;width:540px;height:400px;" width="540" height="400"></iframe>',
     height: 400,
     width: 540,
-    id: (o) => o.join("/")
+    id: (s) => s.join("/")
   },
   codepen: {
     regex: /https?:\/\/codepen\.io\/([^\/\?\&]*)\/pen\/([^\/\?\&]*)/,
@@ -101,7 +101,7 @@ const g = {
     html: "<iframe height='300' scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>",
     height: 300,
     width: 600,
-    id: (o) => o.join("/embed/")
+    id: (s) => s.join("/embed/")
   },
   instagram: {
     regex: /https?:\/\/www\.instagram\.com\/p\/([^\/\?\&]+)\/?.*/,
@@ -116,19 +116,19 @@ const g = {
     html: '<iframe width="600" height="600" style="margin: 0 auto;" frameborder="0" scrolling="no" allowtransparency="true"></iframe>',
     height: 300,
     width: 600,
-    id: (o) => o.join("/status/")
+    id: (s) => s.join("/status/")
   },
   pinterest: {
     regex: /https?:\/\/([^\/\?\&]*).pinterest.com\/pin\/([^\/\?\&]*)\/?$/,
     embedUrl: "https://assets.pinterest.com/ext/embed.html?id=<%= remote_id %>",
     html: "<iframe scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%; min-height: 400px; max-height: 1000px;'></iframe>",
-    id: (o) => o[1]
+    id: (s) => s[1]
   },
   facebook: {
     regex: /https?:\/\/www.facebook.com\/([^\/\?\&]*)\/(.*)/,
     embedUrl: "https://www.facebook.com/plugins/post.php?href=https://www.facebook.com/<%= remote_id %>&width=500",
     html: "<iframe scrolling='no' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%; min-height: 500px; max-height: 1000px;'></iframe>",
-    id: (o) => o.join("/")
+    id: (s) => s.join("/")
   },
   aparat: {
     regex: /(?:http[s]?:\/\/)?(?:www.)?aparat\.com\/v\/([^\/\?\&]+)\/?/,
@@ -148,7 +148,7 @@ const g = {
     html: '<iframe width="100%" height="350" frameborder="0" style="margin: 0 auto;"></iframe>',
     height: 300,
     width: 600,
-    id: (o) => `${o.join("/")}.js`
+    id: (s) => `${s.join("/")}.js`
   },
   threshold360: {
     regex: /https?:\/\/cloud.threshold360.com\/embed\/locations\/([^\/\?\&]+)(?:\?web-key=)([^\?\&]+)/,
@@ -156,25 +156,32 @@ const g = {
     html: '<iframe width="580" height="320" frameborder="0" style="margin: 0 auto;"></iframe>',
     height: 320,
     width: 580,
-    id: (o) => `${o.join("?web-key=")}`
+    id: (s) => `${s.join("?web-key=")}`
+  },
+  brownrice: {
+    regex: /https?:\/\/live4.brownrice.com\/embed\/([^\/\?\&]+)/,
+    embedUrl: "https://live4.brownrice.com/embed/<%= remote_id %>",
+    html: '<iframe width="580" height="324" frameborder="0" style="margin: 0 auto;"></iframe>',
+    height: 324,
+    width: 580
   }
 };
-function u(o, t, i) {
-  var e, s, n, r, a;
+function u(s, t, i) {
+  var e, o, n, r, a;
   t == null && (t = 100);
   function h() {
     var l = Date.now() - r;
-    l < t && l >= 0 ? e = setTimeout(h, t - l) : (e = null, i || (a = o.apply(n, s), n = s = null));
+    l < t && l >= 0 ? e = setTimeout(h, t - l) : (e = null, i || (a = s.apply(n, o), n = o = null));
   }
   var d = function() {
-    n = this, s = arguments, r = Date.now();
+    n = this, o = arguments, r = Date.now();
     var l = i && !e;
-    return e || (e = setTimeout(h, t)), l && (a = o.apply(n, s), n = s = null), a;
+    return e || (e = setTimeout(h, t)), l && (a = s.apply(n, o), n = o = null), a;
   };
   return d.clear = function() {
     e && (clearTimeout(e), e = null);
   }, d.flush = function() {
-    e && (a = o.apply(n, s), n = s = null, clearTimeout(e), e = null);
+    e && (a = s.apply(n, o), n = o = null, clearTimeout(e), e = null);
   }, d;
 }
 u.debounce = u;
@@ -202,11 +209,11 @@ class m {
   set data(t) {
     if (!(t instanceof Object))
       throw Error("Embed Tool data should be object");
-    const { service: i, source: e, embed: s, width: n, height: r, caption: a = "" } = t;
+    const { service: i, source: e, embed: o, width: n, height: r, caption: a = "" } = t;
     this._data = {
       service: i || this.data.service,
       source: e || this.data.source,
-      embed: s || this.data.embed,
+      embed: o || this.data.embed,
       width: n || this.data.width,
       height: r || this.data.height,
       caption: a || this.data.caption || ""
@@ -251,10 +258,10 @@ class m {
       const a = document.createElement("div");
       return this.element = a, a;
     }
-    const { html: t } = m.services[this.data.service], i = document.createElement("div"), e = document.createElement("div"), s = document.createElement("template"), n = this.createPreloader();
-    i.classList.add(this.CSS.baseClass, this.CSS.container, this.CSS.containerLoading), e.classList.add(this.CSS.input, this.CSS.caption), i.appendChild(n), e.contentEditable = !this.readOnly, e.dataset.placeholder = this.api.i18n.t("Enter a caption"), e.innerHTML = this.data.caption || "", s.innerHTML = t, s.content.firstChild.setAttribute("src", this.data.embed), s.content.firstChild.classList.add(this.CSS.content);
+    const { html: t } = m.services[this.data.service], i = document.createElement("div"), e = document.createElement("div"), o = document.createElement("template"), n = this.createPreloader();
+    i.classList.add(this.CSS.baseClass, this.CSS.container, this.CSS.containerLoading), e.classList.add(this.CSS.input, this.CSS.caption), i.appendChild(n), e.contentEditable = !this.readOnly, e.dataset.placeholder = this.api.i18n.t("Enter a caption"), e.innerHTML = this.data.caption || "", o.innerHTML = t, o.content.firstChild.setAttribute("src", this.data.embed), o.content.firstChild.classList.add(this.CSS.content);
     const r = this.embedIsReady(i);
-    return i.appendChild(s.content.firstChild), i.appendChild(e), r.then(() => {
+    return i.appendChild(o.content.firstChild), i.appendChild(e), r.then(() => {
       i.classList.remove(this.CSS.containerLoading);
     }), this.element = i, i;
   }
@@ -281,7 +288,7 @@ class m {
    * @param {PasteEvent} event - event with pasted data
    */
   onPaste(t) {
-    const { key: i, data: e } = t.detail, { regex: s, embedUrl: n, width: r, height: a, id: h = (c) => c.shift() } = m.services[i], d = s.exec(e).slice(1), l = n.replace(/<%= remote_id %>/g, h(d));
+    const { key: i, data: e } = t.detail, { regex: o, embedUrl: n, width: r, height: a, id: h = (c) => c.shift() } = m.services[i], d = o.exec(e).slice(1), l = n.replace(/<%= remote_id %>/g, h(d));
     this.data = {
       service: i,
       source: e,
@@ -298,7 +305,7 @@ class m {
   static prepare({ config: t = {} }) {
     const { services: i = {} } = t;
     let e = Object.entries(g);
-    const s = Object.entries(i).filter(([r, a]) => typeof a == "boolean" && a === !0).map(([r]) => r), n = Object.entries(i).filter(([r, a]) => typeof a == "object").filter(([r, a]) => m.checkServiceConfig(a)).map(([r, a]) => {
+    const o = Object.entries(i).filter(([r, a]) => typeof a == "boolean" && a === !0).map(([r]) => r), n = Object.entries(i).filter(([r, a]) => typeof a == "object").filter(([r, a]) => m.checkServiceConfig(a)).map(([r, a]) => {
       const { regex: h, embedUrl: d, html: l, height: c, width: p, id: f } = a;
       return [r, {
         regex: h,
@@ -309,7 +316,7 @@ class m {
         id: f
       }];
     });
-    s.length && (e = e.filter(([r]) => s.includes(r))), e = e.concat(n), m.services = e.reduce((r, [a, h]) => a in r ? (r[a] = Object.assign({}, r[a], h), r) : (r[a] = h, r), {}), m.patterns = e.reduce((r, [a, h]) => (r[a] = h.regex, r), {});
+    o.length && (e = e.filter(([r]) => o.includes(r))), e = e.concat(n), m.services = e.reduce((r, [a, h]) => a in r ? (r[a] = Object.assign({}, r[a], h), r) : (r[a] = h, r), {}), m.patterns = e.reduce((r, [a, h]) => (r[a] = h.regex, r), {});
   }
   /**
    * Check if Service config is valid
@@ -318,8 +325,8 @@ class m {
    * @returns {boolean}
    */
   static checkServiceConfig(t) {
-    const { regex: i, embedUrl: e, html: s, height: n, width: r, id: a } = t;
-    let h = i && i instanceof RegExp && e && typeof e == "string" && s && typeof s == "string";
+    const { regex: i, embedUrl: e, html: o, height: n, width: r, id: a } = t;
+    let h = i && i instanceof RegExp && e && typeof e == "string" && o && typeof o == "string";
     return h = h && (a !== void 0 ? a instanceof Function : !0), h = h && (n !== void 0 ? Number.isFinite(n) : !0), h = h && (r !== void 0 ? Number.isFinite(r) : !0), h;
   }
   /**
@@ -348,8 +355,8 @@ class m {
    */
   embedIsReady(t) {
     let e = null;
-    return new Promise((s, n) => {
-      e = new MutationObserver(b.debounce(s, 450)), e.observe(t, {
+    return new Promise((o, n) => {
+      e = new MutationObserver(b.debounce(o, 450)), e.observe(t, {
         childList: !0,
         subtree: !0
       });
