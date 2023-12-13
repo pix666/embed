@@ -191,6 +191,13 @@ const SERVICES: ServicesConfigType = {
     width: 580,
     id: (groups) => `${groups.join('?web-key=')}`,
   },
+  brownrice: {
+    regex: /https?:\/\/live4.brownrice.com\/embed\/([^\/\?\&]+)/,
+    embedUrl: 'https://live4.brownrice.com/embed/<%= remote_id %>',
+    html: '<iframe width="580" height="324" frameborder="0" style="margin: 0 auto;"></iframe>',
+    height: 324,
+    width: 580,
+  }
 };
 
 export default SERVICES;
