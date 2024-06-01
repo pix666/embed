@@ -1,5 +1,5 @@
 (function(){"use strict";try{if(typeof document<"u"){var e=document.createElement("style");e.appendChild(document.createTextNode('.embed-tool--loading .embed-tool__caption{display:none}.embed-tool--loading .embed-tool__preloader{display:block}.embed-tool--loading .embed-tool__content{display:none}.embed-tool__preloader{display:none;position:relative;height:200px;box-sizing:border-box;border-radius:5px;border:1px solid #e6e9eb}.embed-tool__preloader:before{content:"";position:absolute;z-index:3;left:50%;top:50%;width:30px;height:30px;margin-top:-25px;margin-left:-15px;border-radius:50%;border:2px solid #cdd1e0;border-top-color:#388ae5;box-sizing:border-box;animation:embed-preloader-spin 2s infinite linear}.embed-tool__url{position:absolute;bottom:20px;left:50%;transform:translate(-50%);max-width:250px;color:#7b7e89;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.embed-tool__content{width:100%}.embed-tool__caption{margin-top:7px}.embed-tool__caption[contentEditable=true][data-placeholder]:before{position:absolute;content:attr(data-placeholder);color:#707684;font-weight:400;opacity:0}.embed-tool__caption[contentEditable=true][data-placeholder]:empty:before{opacity:1}.embed-tool__caption[contentEditable=true][data-placeholder]:empty:focus:before{opacity:0}@keyframes embed-preloader-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}')),document.head.appendChild(e)}}catch(o){console.error("vite-plugin-css-injected-by-js",o)}})();
-const g = {
+const b = {
   vimeo: {
     regex: /(?:http[s]?:\/\/)?(?:www.)?(?:player.)?vimeo\.co(?:.+\/([^\/]\d+)(?:#t=[\d]+)?s?$)/,
     embedUrl: "https://player.vimeo.com/video/<%= remote_id %>?title=0&byline=0",
@@ -8,7 +8,7 @@ const g = {
     width: 580
   },
   youtube: {
-    regex: /(?:https?:\/\/)?(?:www\.)?(?:(?:youtu\.be\/)|(?:youtube\.com)\/(?:v\/|u\/\w\/|embed\/|watch))(?:(?:\?v=)?([^#&?=]*))?((?:[?&]\w*=[-\w]*)*)/,
+    regex: /(?:https?:\/\/)?(?:www\.)?(?:(?:youtu\.be\/)|(?:youtube\.com)\/(?:v\/|u\/\w\/|embed\/|watch))(?:(?:\?v=)?([^#&?=]*))?((?:[?&]\w*=[-\w%]*)*)/,
     embedUrl: "https://www.youtube.com/embed/<%= remote_id %>",
     html: '<iframe style="width:100%;" height="320" frameborder="0" allowfullscreen></iframe>',
     height: 320,
@@ -111,12 +111,12 @@ const g = {
     width: 400
   },
   twitter: {
-    regex: /^https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+?.*)?$/,
-    embedUrl: "https://twitframe.com/show?url=https://twitter.com/<%= remote_id %>",
+    regex: /^https?:\/\/(www\.)?(?:twitter\.com|x\.com)\/.+\/status\/(\d+)/,
+    embedUrl: "https://platform.twitter.com/embed/Tweet.html?id=<%= remote_id %>",
     html: '<iframe width="600" height="600" style="margin: 0 auto;" frameborder="0" scrolling="no" allowtransparency="true"></iframe>',
     height: 300,
     width: 600,
-    id: (s) => s.join("/status/")
+    id: (s) => s[1]
   },
   pinterest: {
     regex: /https?:\/\/([^\/\?\&]*).pinterest.com\/pin\/([^\/\?\&]*)\/?$/,
@@ -185,7 +185,7 @@ function u(s, t, i) {
   }, d;
 }
 u.debounce = u;
-var b = u;
+var g = u;
 class m {
   /**
    * @param {{data: EmbedData, config: EmbedConfig, api: object}}
@@ -304,7 +304,7 @@ class m {
    */
   static prepare({ config: t = {} }) {
     const { services: i = {} } = t;
-    let e = Object.entries(g);
+    let e = Object.entries(b);
     const o = Object.entries(i).filter(([r, a]) => typeof a == "boolean" && a === !0).map(([r]) => r), n = Object.entries(i).filter(([r, a]) => typeof a == "object").filter(([r, a]) => m.checkServiceConfig(a)).map(([r, a]) => {
       const { regex: h, embedUrl: d, html: l, height: c, width: p, id: f } = a;
       return [r, {
@@ -356,7 +356,7 @@ class m {
   embedIsReady(t) {
     let e = null;
     return new Promise((o, n) => {
-      e = new MutationObserver(b.debounce(o, 450)), e.observe(t, {
+      e = new MutationObserver(g.debounce(o, 450)), e.observe(t, {
         childList: !0,
         subtree: !0
       });
